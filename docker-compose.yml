@@ -1,0 +1,105 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: security_scanner_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scanner_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: security_scanner_backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      BACKEND_PORT: ${BACKEND_PORT}
+      GIN_MODE: ${GIN_MODE}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRY: ${JWT_EXPIRY}
+      REFRESH_TOKEN_EXPIRY: ${REFRESH_TOKEN_EXPIRY}
+      LOG_LEVEL: ${LOG_LEVEL}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./storage:/app/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scanner_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: security_scanner_frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://backend:8080
+    networks:
+      - scanner_network
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: security_scanner_worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY}
+      SCAN_TIMEOUT: ${SCAN_TIMEOUT}
+      DNS_TIMEOUT: ${DNS_TIMEOUT}
+      HTTP_TIMEOUT: ${HTTP_TIMEOUT}
+      SCREENSHOT_TIMEOUT: ${SCREENSHOT_TIMEOUT}
+      ALLOWED_DOMAINS: ${ALLOWED_DOMAINS}
+      LOG_LEVEL: ${LOG_LEVEL}
+    volumes:
+      - ./storage:/app/storage
+    networks:
+      - scanner_network
+
+  demo-target:
+    build:
+      context: ./docker/demo-target
+      dockerfile: Dockerfile
+    container_name: security_scanner_demo_target
+    ports:
+      - "8888:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - scanner_network
+
+volumes:
+  postgres_data:
+
+networks:
+  scanner_network:
+    driver: bridge

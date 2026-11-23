@@ -1,0 +1,12 @@
+{
+  "name": "security-scanner-demo-target",
+  "version": "1.0.0",
+  "description": "Demo web app with intentionally poor security headers",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,20 @@
+# dependencies & build output
+node_modules/
+frontend/dist/
+frontend/src-tauri/target/
+frontend/src-tauri/gen/
+*.tsbuildinfo
+
+# env & secrets
+.env
+.env.*
+!.env.example
+
+# runtime data
+storage/
+
+# editors / OS / local tooling
+.idea/
+.vscode/
+.claude/
+.DS_Store
