@@ -1,4 +1,4 @@
-# Build stage
+# build
 FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o worker ./cmd/worker
 
-# Runtime stage
+# runtime
 FROM mcr.microsoft.com/playwright:v1.40.0-focal
 
 WORKDIR /app

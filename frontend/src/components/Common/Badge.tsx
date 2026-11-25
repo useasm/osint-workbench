@@ -14,7 +14,6 @@ export type BadgeVariant =
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant
-  /** Render a small leading status dot. */
   dot?: boolean
   children: ReactNode
 }
@@ -57,7 +56,7 @@ export function Badge({ variant = 'neutral', dot = false, className, children, .
   )
 }
 
-// ── Mapping helpers so pages can pass domain values directly ─────────────────
+// pages pass raw severity/status values, these map them to badge variants
 export function severityToVariant(severity: Severity): BadgeVariant {
   switch (severity) {
     case 'Critical':

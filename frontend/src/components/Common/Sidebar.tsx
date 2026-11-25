@@ -44,7 +44,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           'lg:translate-x-0',
         )}
       >
-        {/* Brand */}
         <div className="flex h-[60px] shrink-0 items-center gap-3 border-b border-border-color px-5">
           <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-accent-green/50 bg-accent-green/10 text-accent-green shadow-glow-green">
             <Terminal className="h-4 w-4" />
@@ -57,7 +56,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
         </div>
 
-        {/* Nav */}
         <nav className="scrollbar-thin flex-1 space-y-1 overflow-y-auto p-3">
           <SectionLabel>Overview</SectionLabel>
           <Item to="/" end icon={LayoutDashboard} label="Dashboard" onNavigate={onClose} />
@@ -89,7 +87,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           <Item to="/profile" icon={UserCircle} label="Profile" onNavigate={onClose} />
         </nav>
 
-        {/* Status footer */}
         <div className="shrink-0 border-t border-border-color p-4">
           <div className="flex items-center gap-2 rounded-sm border border-border-color bg-bg-primary/50 px-3 py-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-accent-green shadow-glow-green" />

@@ -30,7 +30,6 @@ export function ModulesHubPage() {
         subtitle="15 intelligence branches, each with sub-branches, functions and free resources."
       />
 
-      {/* Summary strip */}
       <div className="mb-6 grid grid-cols-3 gap-4">
         <StatStrip icon={Layers} value={String(osintBranches.length)} label="Branches" accent="green" />
         <StatStrip icon={Boxes} value={String(totalFunctions)} label="Functions" accent="cyan" />

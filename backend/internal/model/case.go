@@ -6,7 +6,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Case represents an investigation/project
 type Case struct {
 	ID             uuid.UUID `db:"id" json:"id"`
 	UserID         uuid.UUID `db:"user_id" json:"user_id"`
@@ -18,10 +17,9 @@ type Case struct {
 	CreatedAt      time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt      time.Time `db:"updated_at" json:"updated_at"`
 	ClosedAt       *time.Time `db:"closed_at" json:"closed_at,omitempty"`
-	DeletedAt      *time.Time `db:"deleted_at" json:"-"` // Soft delete
+	DeletedAt      *time.Time `db:"deleted_at" json:"-"` // soft delete
 }
 
-// CaseCreateRequest is the request body for creating a case
 type CaseCreateRequest struct {
 	Name           string `json:"name" validate:"required,min=3,max=255"`
 	Description    string `json:"description" validate:"omitempty,max=2000"`
@@ -29,7 +27,6 @@ type CaseCreateRequest struct {
 	Classification string `json:"classification" validate:"omitempty,oneof=public internal confidential secret"`
 }
 
-// CaseUpdateRequest is the request body for updating a case
 type CaseUpdateRequest struct {
 	Name           string `json:"name" validate:"omitempty,min=3,max=255"`
 	Description    string `json:"description" validate:"omitempty,max=2000"`
@@ -38,7 +35,6 @@ type CaseUpdateRequest struct {
 	Classification string `json:"classification" validate:"omitempty,oneof=public internal confidential secret"`
 }
 
-// CaseResponse is the response body for a case
 type CaseResponse struct {
 	ID             uuid.UUID `json:"id"`
 	Name           string    `json:"name"`
@@ -55,7 +51,6 @@ type CaseResponse struct {
 	ClosedAt       *time.Time `json:"closed_at,omitempty"`
 }
 
-// CaseMember represents a member of a case
 type CaseMember struct {
 	CaseID  uuid.UUID `db:"case_id" json:"case_id"`
 	UserID  uuid.UUID `db:"user_id" json:"user_id"`
@@ -64,7 +59,6 @@ type CaseMember struct {
 	AddedBy *uuid.UUID `db:"added_by" json:"added_by,omitempty"`
 }
 
-// CaseMemberResponse is the response body for a case member
 type CaseMemberResponse struct {
 	UserID    uuid.UUID `json:"user_id"`
 	Username  string    `json:"username"`
@@ -74,7 +68,6 @@ type CaseMemberResponse struct {
 	AvatarURL string    `json:"avatar_url"`
 }
 
-// Entity represents a person, company, domain, IP, etc
 type Entity struct {
 	ID          uuid.UUID              `db:"id" json:"id"`
 	CaseID      uuid.UUID              `db:"case_id" json:"case_id"`
@@ -90,7 +83,6 @@ type Entity struct {
 	UpdatedAt   time.Time              `db:"updated_at" json:"updated_at"`
 }
 
-// EntityCreateRequest is the request body for creating an entity
 type EntityCreateRequest struct {
 	Type        string                 `json:"type" validate:"required,oneof=person company domain ip email phone username social_account"`
 	Name        string                 `json:"name" validate:"required,min=1,max=255"`
@@ -102,7 +94,6 @@ type EntityCreateRequest struct {
 	IsPrimary   bool                   `json:"is_primary"`
 }
 
-// EntityUpdateRequest is the request body for updating an entity
 type EntityUpdateRequest struct {
 	Name        string                 `json:"name" validate:"omitempty,min=1,max=255"`
 	Description string                 `json:"description" validate:"omitempty,max=2000"`
@@ -112,7 +103,6 @@ type EntityUpdateRequest struct {
 	IsPrimary   bool                   `json:"is_primary"`
 }
 
-// EntityAlias represents an alias for an entity
 type EntityAlias struct {
 	ID        uuid.UUID `db:"id" json:"id"`
 	EntityID  uuid.UUID `db:"entity_id" json:"entity_id"`
@@ -122,7 +112,6 @@ type EntityAlias struct {
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 }
 
-// Relation represents a relationship between entities
 type Relation struct {
 	ID             uuid.UUID `db:"id" json:"id"`
 	CaseID         uuid.UUID `db:"case_id" json:"case_id"`
@@ -134,7 +123,6 @@ type Relation struct {
 	CreatedAt      time.Time `db:"created_at" json:"created_at"`
 }
 
-// RelationCreateRequest is the request body for creating a relation
 type RelationCreateRequest struct {
 	SourceEntityID uuid.UUID `json:"source_entity_id" validate:"required"`
 	TargetEntityID uuid.UUID `json:"target_entity_id" validate:"required"`
@@ -143,7 +131,6 @@ type RelationCreateRequest struct {
 	Evidence       string    `json:"evidence" validate:"omitempty,max=2000"`
 }
 
-// Finding represents a finding/issue discovered during analysis
 type Finding struct {
 	ID          uuid.UUID              `db:"id" json:"id"`
 	ToolRunID   *uuid.UUID             `db:"tool_run_id" json:"tool_run_id,omitempty"`
@@ -161,7 +148,6 @@ type Finding struct {
 	ResolvedAt  *time.Time             `db:"resolved_at" json:"resolved_at,omitempty"`
 }
 
-// FindingCreateRequest is the request body for creating a finding
 type FindingCreateRequest struct {
 	Type           string                 `json:"type" validate:"required,min=1,max=50"`
 	Title          string                 `json:"title" validate:"required,min=3,max=255"`
@@ -172,7 +158,6 @@ type FindingCreateRequest struct {
 	Tags           []string               `json:"tags" validate:"omitempty"`
 }
 
-// ToolRun represents an OSINT tool execution
 type ToolRun struct {
 	ID            uuid.UUID              `db:"id" json:"id"`
 	CaseID        uuid.UUID              `db:"case_id" json:"case_id"`
@@ -188,14 +173,12 @@ type ToolRun struct {
 	CreatedAt     time.Time              `db:"created_at" json:"created_at"`
 }
 
-// ToolRunRequest is the request body for running a tool
 type ToolRunRequest struct {
 	ToolName  string                 `json:"tool_name" validate:"required"`
 	EntityID  *uuid.UUID             `json:"entity_id" validate:"omitempty"`
 	InputData map[string]interface{} `json:"input_data" validate:"required"`
 }
 
-// Report represents a generated report
 type Report struct {
 	ID        uuid.UUID `db:"id" json:"id"`
 	CaseID    uuid.UUID `db:"case_id" json:"case_id"`

@@ -234,7 +234,7 @@ function ReportsTab({ onAction }: { onAction: (m: string) => void }) {
   )
 }
 
-// Literal width classes so Tailwind's JIT can detect them (no inline styles).
+// literal width classes so tailwind jit can see them
 const decileWidth: Record<number, string> = {
   0: 'w-0',
   10: 'w-[10%]',

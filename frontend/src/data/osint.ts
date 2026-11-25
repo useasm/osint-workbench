@@ -1,11 +1,5 @@
-// ──────────────────────────────────────────────────────────────────────────
-// OSINT taxonomy — 15 branches, sub-branches, functions and CURATED free resources.
-// This is the app's single source of truth: menus and pages are generated from it.
-// To add a tool, append an entry to the `resources` of the relevant branch.
-//
-// Disclaimer: these resources are intended for legal, authorized and educational
-// use only (OSINT, contracted pentesting, CTF, research).
-// ──────────────────────────────────────────────────────────────────────────
+// single source of truth: sidebar, module pages and counters are generated from this list.
+// to add a tool, append it to the branch's `resources`.
 import {
   Fingerprint,
   Users,
@@ -39,7 +33,7 @@ export interface OsintSubBranch {
   id: string
   name: string
   functions: string[]
-  /** For branch 15: link to an actual app page. */
+  // branch 15 only: links to a real app page
   route?: string
 }
 
@@ -499,7 +493,6 @@ export const osintBranches: OsintBranch[] = [
   },
 ]
 
-// Quick lookups.
 export const branchById = (id: string): OsintBranch | undefined =>
   osintBranches.find((b) => b.id === id)
 

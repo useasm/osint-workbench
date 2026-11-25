@@ -11,7 +11,6 @@ export interface ModalProps {
   title?: ReactNode
   description?: ReactNode
   size?: ModalSize
-  /** Optional footer area (e.g. action buttons). */
   footer?: ReactNode
   children?: ReactNode
 }
@@ -25,7 +24,7 @@ const sizes: Record<ModalSize, string> = {
 export function Modal({ open, onClose, title, description, size = 'md', footer, children }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
 
-  // Close on Escape + lock body scroll while open.
+  // close on escape, lock page scroll while open
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -34,7 +33,7 @@ export function Modal({ open, onClose, title, description, size = 'md', footer, 
     document.addEventListener('keydown', onKey)
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    // Move focus into the dialog for keyboard users.
+    // move focus into the dialog for keyboard users
     panelRef.current?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
@@ -51,7 +50,6 @@ export function Modal({ open, onClose, title, description, size = 'md', footer, 
       aria-modal="true"
       aria-label={typeof title === 'string' ? title : 'Dialog'}
     >
-      {/* Overlay */}
       <button
         type="button"
         aria-label="Close dialog"
@@ -59,7 +57,6 @@ export function Modal({ open, onClose, title, description, size = 'md', footer, 
         className="absolute inset-0 cursor-default bg-bg-primary/80 backdrop-blur-sm animate-fade-in"
       />
 
-      {/* Panel */}
       <div
         ref={panelRef}
         tabIndex={-1}

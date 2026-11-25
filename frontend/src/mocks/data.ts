@@ -1,7 +1,4 @@
-// ──────────────────────────────────────────────────────────────────────────
-// Mock data for OSINT Workbench (frontend-only, no backend).
-// Everything here is static and safe to render. No API calls anywhere.
-// ──────────────────────────────────────────────────────────────────────────
+// static demo data, nothing here talks to an api yet
 
 export type Severity = 'Critical' | 'High' | 'Medium' | 'Low' | 'Info'
 export type CaseStatus = 'Active' | 'In Review' | 'Closed' | 'Archived'
@@ -61,7 +58,6 @@ export interface DashboardStat {
   accent: 'green' | 'red' | 'cyan' | 'orange'
 }
 
-// ── Cases ───────────────────────────────────────────────────────────────────
 export const mockCases: Case[] = [
   {
     id: 1,
@@ -145,7 +141,6 @@ export const mockCases: Case[] = [
   },
 ]
 
-// ── Findings ──────────────────────────────────────────────────────────────
 export const mockFindings: Finding[] = [
   {
     id: 1,
@@ -229,7 +224,6 @@ export const mockFindings: Finding[] = [
   },
 ]
 
-// ── Entities ──────────────────────────────────────────────────────────────
 export const mockEntities: Entity[] = [
   { id: 1, name: 'john@example.com', type: 'email', confidence: 95, source: 'Hunter', date: 'May 15' },
   { id: 2, name: '+1 415 555 0142', type: 'phone', confidence: 82, source: 'Truecaller', date: 'May 15' },
@@ -245,7 +239,6 @@ export const mockEntities: Entity[] = [
   { id: 12, name: '@target_official', type: 'username', confidence: 64, source: 'Maigret', date: 'May 10' },
 ]
 
-// ── Relations (graph edges) ─────────────────────────────────────────────────
 export const mockRelations: Relation[] = [
   { id: 1, from: 'john@example.com', to: 'target-corp.com', label: 'registered_with', confidence: 91 },
   { id: 2, from: 'target-corp.com', to: '185.220.101.47', label: 'resolves_to', confidence: 99 },
@@ -255,14 +248,12 @@ export const mockRelations: Relation[] = [
   { id: 6, from: 'admin@target-corp.com', to: 'mail.target-corp.com', label: 'hosted_on', confidence: 95 },
 ]
 
-// ── Dashboard stats ─────────────────────────────────────────────────────────
 export const mockStats: DashboardStat[] = [
   { label: 'Active cases', value: '5', delta: '+2 this week', trend: 'up', accent: 'cyan' },
   { label: 'Entities found', value: '134', delta: '+18 today', trend: 'up', accent: 'green' },
   { label: 'Critical findings', value: '4', delta: '+1 today', trend: 'up', accent: 'red' },
 ]
 
-// ── Case detail (overview tab) ──────────────────────────────────────────────
 export interface CaseOverviewStat {
   label: string
   value: string
@@ -284,7 +275,6 @@ export const mockActivity: { id: number; text: string; time: string; accent: Das
   { id: 5, text: 'Case shared with analyst @m.rivera', time: '1d ago', accent: 'cyan' },
 ]
 
-// Search "scopes" used by the SearchPage.
 export const searchScopes: { id: EntityType | 'name'; label: string; placeholder: string }[] = [
   { id: 'phone', label: 'Phone', placeholder: '+1 415 555 0142' },
   { id: 'email', label: 'Email', placeholder: 'target@example.com' },
@@ -293,7 +283,6 @@ export const searchScopes: { id: EntityType | 'name'; label: string; placeholder
   { id: 'name', label: 'Name', placeholder: 'Jane Doe' },
 ]
 
-// Mock signed-in user for the profile/header.
 export const mockUser = {
   name: 'M. Rivera',
   username: 'm.rivera',

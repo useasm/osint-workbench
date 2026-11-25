@@ -1,20 +1,14 @@
-// Central accent → utility-class map. All class strings are written out in full
-// so Tailwind's JIT can detect them (no dynamic string interpolation).
+// class names are written out in full on purpose, tailwind jit can't see interpolated strings
 
 export type Accent = 'green' | 'cyan' | 'orange' | 'red' | 'violet' | 'yellow'
 
 export interface AccentClasses {
   text: string
   border: string
-  /** subtle tinted background */
   bg: string
-  /** solid dot / bar */
   solid: string
-  /** hover glow + border, for interactive cards */
   hover: string
-  /** icon chip (bg + border + text) */
   chip: string
-  /** text color applied on parent .group hover (literal for JIT) */
   groupHoverText: string
 }
 

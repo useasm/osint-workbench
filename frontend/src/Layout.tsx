@@ -3,10 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { Sidebar } from './components/Common/Sidebar'
 import { Header } from './components/Common/Header'
 
-/**
- * Application shell: fixed sidebar (280px) + sticky header (60px) + routed content.
- * On mobile the sidebar collapses into a hamburger-triggered drawer.
- */
+// sidebar turns into a drawer on mobile
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 

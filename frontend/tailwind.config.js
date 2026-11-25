@@ -4,18 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Serial Experiments Lain / Wired — clean cold blue.
+        // serial experiments lain / wired palette: cold blue
         'bg-primary': '#070f1f',
         'bg-secondary': '#0c1830',
         'bg-tertiary': '#152844',
         'border-color': '#284f86',
         'text-primary': '#e7f4ff',
         'text-secondary': '#8096b8',
-        'accent-green': '#33a6ff', // (formerly green) — now azure blue: primary / success / online
+        'accent-green': '#33a6ff', // name is legacy, it's azure now: primary / success / online
         'accent-red': '#ff526b', // danger
         'accent-orange': '#ffbf5b', // warning
-        'accent-cyan': '#54e7ff', // primary active accent — the Wired signal
-        'accent-violet': '#9d7bff', // secondary accent
+        'accent-cyan': '#54e7ff', // main accent, the wired signal
+        'accent-violet': '#9d7bff',
         'accent-yellow': '#ffd86b',
       },
       fontFamily: {
@@ -28,7 +28,7 @@ export default {
         md: '4px',
       },
       boxShadow: {
-        // Active elements glow with a cold blue-cyan signal.
+        // active elements glow cold blue-cyan
         'glow-green': '0 0 16px rgba(51, 166, 255, 0.34)',
         'glow-red': '0 0 16px rgba(255, 82, 107, 0.32)',
         'glow-cyan': '0 0 18px rgba(84, 231, 255, 0.38)',

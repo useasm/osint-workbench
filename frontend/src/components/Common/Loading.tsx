@@ -4,7 +4,6 @@ import { cn } from '../../lib/cn'
 export interface LoadingProps {
   size?: 'sm' | 'md' | 'lg'
   label?: string
-  /** Fill the parent and center the spinner. */
   fullScreen?: boolean
   className?: string
 }

@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
-#
-# Builds the OSINT Workbench desktop app (.app + .dmg) on macOS with Tauri.
-#
-#   ./build-app.sh
-#
-# Requires Node.js and Rust. Rust is installed automatically (rustup) if missing.
-# Output goes to frontend/src-tauri/target/release/bundle/.
+# builds the macos .app + .dmg with tauri, installs rust via rustup if it's missing
+# output: frontend/src-tauri/target/release/bundle/
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -20,12 +15,11 @@ command -v node >/dev/null 2>&1 || {
 }
 cyan "▸ Node $(node -v)"
 
-# Rust (cargo) is required for Tauri. Install it via rustup if missing.
 if ! command -v cargo >/dev/null 2>&1; then
   cyan "▸ Rust not found — installing via rustup…"
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 fi
-# Load cargo into the current shell session.
+# make cargo available in this shell without reopening the terminal
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 command -v cargo >/dev/null 2>&1 || {
   red "✗ cargo is still unavailable. Open a new terminal and run the script again."
@@ -42,7 +36,7 @@ cyan "[2/3] App icons…"
 if command -v python3 >/dev/null 2>&1; then
   python3 scripts/make_icon.py || true
 fi
-# Generate the full Tauri icon set (.icns/.ico/png) from build/icon.png.
+# generate the full tauri icon set from build/icon.png
 npx tauri icon build/icon.png >/dev/null 2>&1 || npx tauri icon build/icon.png
 
 cyan "[3/3] Building .app/.dmg (tauri build)…"

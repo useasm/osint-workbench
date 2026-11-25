@@ -1,8 +1,6 @@
--- Create extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Users table
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -21,12 +19,10 @@ CREATE TABLE users (
     deleted_at TIMESTAMP
 );
 
--- Create index on email and username
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_users_is_active ON users(is_active);
 
--- Roles table
 CREATE TABLE roles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(255) UNIQUE NOT NULL,
@@ -36,7 +32,7 @@ CREATE TABLE roles (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert default roles
+-- seed default roles
 INSERT INTO roles (name, description, is_system, permissions) VALUES
 ('admin', 'Administrator with full access', true, ARRAY['*']),
 ('analyst', 'Security analyst with case management access', true, ARRAY['case.create', 'case.read', 'case.update', 'case.delete', 'entity.create', 'entity.read', 'entity.update', 'entity.delete', 'tool.execute', 'finding.read']),
@@ -44,7 +40,6 @@ INSERT INTO roles (name, description, is_system, permissions) VALUES
 ('guest', 'Limited guest access', true, ARRAY['case.read:limited', 'entity.read:limited'])
 ON CONFLICT DO NOTHING;
 
--- User roles junction table
 CREATE TABLE user_roles (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     role_id UUID REFERENCES roles(id) ON DELETE CASCADE,
@@ -56,7 +51,6 @@ CREATE TABLE user_roles (
 CREATE INDEX idx_user_roles_user_id ON user_roles(user_id);
 CREATE INDEX idx_user_roles_role_id ON user_roles(role_id);
 
--- Cases table (investigations/projects)
 CREATE TABLE cases (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -76,7 +70,6 @@ CREATE INDEX idx_cases_user_id ON cases(user_id);
 CREATE INDEX idx_cases_status ON cases(status);
 CREATE INDEX idx_cases_created_at ON cases(created_at DESC);
 
--- Case members (collaboration)
 CREATE TABLE case_members (
     case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -89,7 +82,6 @@ CREATE TABLE case_members (
 CREATE INDEX idx_case_members_case_id ON case_members(case_id);
 CREATE INDEX idx_case_members_user_id ON case_members(user_id);
 
--- Entities table (persons, companies, domains, IPs, etc)
 CREATE TABLE entities (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
@@ -111,7 +103,6 @@ CREATE INDEX idx_entities_type ON entities(type);
 CREATE INDEX idx_entities_name ON entities(name);
 CREATE INDEX idx_entities_created_at ON entities(created_at DESC);
 
--- Entity aliases
 CREATE TABLE entity_aliases (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     entity_id UUID REFERENCES entities(id) ON DELETE CASCADE,
@@ -124,7 +115,6 @@ CREATE TABLE entity_aliases (
 CREATE INDEX idx_entity_aliases_entity_id ON entity_aliases(entity_id);
 CREATE INDEX idx_entity_aliases_alias_name ON entity_aliases(alias_name);
 
--- Relations between entities
 CREATE TABLE relations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
@@ -141,7 +131,6 @@ CREATE INDEX idx_relations_source_entity_id ON relations(source_entity_id);
 CREATE INDEX idx_relations_target_entity_id ON relations(target_entity_id);
 CREATE INDEX idx_relations_type ON relations(relation_type);
 
--- Tool runs / OSINT execution
 CREATE TABLE tool_runs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
@@ -162,7 +151,6 @@ CREATE INDEX idx_tool_runs_status ON tool_runs(status);
 CREATE INDEX idx_tool_runs_tool_name ON tool_runs(tool_name);
 CREATE INDEX idx_tool_runs_created_at ON tool_runs(created_at DESC);
 
--- Findings from analysis
 CREATE TABLE findings (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tool_run_id UUID REFERENCES tool_runs(id),
@@ -186,7 +174,6 @@ CREATE INDEX idx_findings_status ON findings(status);
 CREATE INDEX idx_findings_type ON findings(type);
 CREATE INDEX idx_findings_created_at ON findings(created_at DESC);
 
--- Audit logs
 CREATE TABLE audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
@@ -206,7 +193,6 @@ CREATE INDEX idx_audit_logs_action ON audit_logs(action);
 CREATE INDEX idx_audit_logs_resource_type ON audit_logs(resource_type);
 CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at DESC);
 
--- Sessions
 CREATE TABLE sessions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -222,7 +208,6 @@ CREATE TABLE sessions (
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
 
--- API Keys
 CREATE TABLE api_keys (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -241,7 +226,6 @@ CREATE INDEX idx_api_keys_user_id ON api_keys(user_id);
 CREATE INDEX idx_api_keys_key_hash ON api_keys(key_hash);
 CREATE INDEX idx_api_keys_is_active ON api_keys(is_active);
 
--- Reports
 CREATE TABLE reports (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     case_id UUID REFERENCES cases(id) ON DELETE CASCADE,
@@ -259,7 +243,7 @@ CREATE TABLE reports (
 CREATE INDEX idx_reports_case_id ON reports(case_id);
 CREATE INDEX idx_reports_created_at ON reports(created_at DESC);
 
--- Update timestamps with trigger
+-- keep updated_at fresh via trigger
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN

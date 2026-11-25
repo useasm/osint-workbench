@@ -29,7 +29,7 @@
     background-attachment: fixed;
   }
 
-  /* Background grid and very subtle analog noise */
+  /* background grid + faint analog noise */
   body::before {
     content: '';
     position: fixed;
@@ -47,7 +47,7 @@
     opacity: 0.5;
   }
 
-  /* CRT scanlines + subtle CRT brightness flicker */
+  /* crt scanlines + brightness flicker */
   body::after {
     content: '';
     position: fixed;
@@ -72,7 +72,7 @@
     z-index: 1;
   }
 
-  /* Old-TV frame roll: a soft bright band slowly sweeps across the screen */
+  /* old tv frame roll: a soft bright band slowly sweeps down the screen */
   #root::after {
     content: '';
     position: fixed;
@@ -95,7 +95,7 @@
     animation: tv-roll 9s linear infinite;
   }
 
-  /* Rare sync loss: a brief RGB line tear */
+  /* rare sync loss: a short rgb line tear */
   #root::before {
     content: '';
     position: fixed;
@@ -124,7 +124,7 @@
     animation: tv-glitch 7.5s steps(1, end) infinite;
   }
 
-  /* Subtle CRT brightness flicker */
+  /* crt flicker */
   @keyframes tv-flicker {
     0%,
     100% {
@@ -152,7 +152,7 @@
     }
   }
 
-  /* Continuous slow frame roll (vertical hold) */
+  /* slow vertical hold roll */
   @keyframes tv-roll {
     0% {
       background-position: 0 -28vh;
@@ -163,7 +163,7 @@
     }
   }
 
-  /* Short, rare RGB sync tears */
+  /* rare rgb sync tears */
   @keyframes tv-glitch {
     0%,
     100% {
@@ -233,7 +233,6 @@
     color: #ffffff;
   }
 
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;

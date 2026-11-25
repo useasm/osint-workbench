@@ -77,7 +77,6 @@ export function DashboardPage() {
         }
       />
 
-      {/* Stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mockStats.map((stat, i) => {
           const Icon = statIcon[i] ?? Activity
@@ -103,7 +102,6 @@ export function DashboardPage() {
         })}
       </div>
 
-      {/* OSINT modules quick access */}
       <div className="mt-6">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-text-primary">
@@ -143,7 +141,6 @@ export function DashboardPage() {
         </p>
       </div>
 
-      {/* Tables */}
       <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
         <Card
           title="Recent cases"
@@ -182,7 +179,6 @@ export function DashboardPage() {
         </Card>
       </div>
 
-      {/* New case modal */}
       <Modal
         open={open}
         onClose={() => setOpen(false)}

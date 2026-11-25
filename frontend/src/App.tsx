@@ -19,11 +19,10 @@ function App() {
     <ToastProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
-          {/* Standalone auth routes (no app shell) */}
+          {/* auth pages render without the app shell */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* App shell routes */}
           <Route element={<Layout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/modules" element={<ModulesHubPage />} />

@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
 
-// Intentionally poor security headers for demo purposes
+// intentionally weak config so the scanner has something to find
 app.use((req, res, next) => {
-  // Missing HSTS
-  // Missing CSP
-  // Missing X-Frame-Options
-  // Missing X-Content-Type-Options
+  // no hsts, csp, x-frame-options or x-content-type-options
   res.setHeader('Server', 'Apache/2.4.41 (Ubuntu)');
   res.setHeader('X-Powered-By', 'PHP/7.4.3');
-  // Insecure cookie
+  // cookie without secure / httponly
   res.setHeader('Set-Cookie', 'sessionid=abc123def456; Path=/');
   next();
 });

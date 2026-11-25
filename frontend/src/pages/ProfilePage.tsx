@@ -37,7 +37,6 @@ export function ProfilePage() {
       <PageHeader title="Profile" subtitle="Manage your operator identity and preferences." />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Identity card */}
         <Card className="lg:col-span-1">
           <div className="flex flex-col items-center text-center">
             <div className="flex h-20 w-20 items-center justify-center rounded border border-accent-green/50 bg-accent-green/10 text-2xl font-bold text-accent-green shadow-glow-green">
@@ -54,7 +53,6 @@ export function ProfilePage() {
           </div>
         </Card>
 
-        {/* Account + settings */}
         <div className="space-y-6 lg:col-span-2">
           <Card title="Account" subtitle="Read-only in this demo build">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

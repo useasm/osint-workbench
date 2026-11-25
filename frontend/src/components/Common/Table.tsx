@@ -4,7 +4,7 @@ import { cn } from '../../lib/cn'
 export interface Column<T> {
   key: string
   header: ReactNode
-  /** Custom cell renderer. Falls back to `row[key]` when omitted. */
+  // falls back to row[key] when omitted
   render?: (row: T) => ReactNode
   className?: string
   align?: 'left' | 'right' | 'center'

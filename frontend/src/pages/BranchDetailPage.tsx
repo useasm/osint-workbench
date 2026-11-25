@@ -20,7 +20,7 @@ export function BranchDetailPage() {
   const [active, setActive] = useState('resources')
   const [query, setQuery] = useState('')
 
-  // Reset local UI state when switching between branches.
+  // reset tab and filter when switching branches
   useEffect(() => {
     setActive('resources')
     setQuery('')
@@ -54,7 +54,6 @@ export function BranchDetailPage() {
         <ArrowLeft className="h-3.5 w-3.5" /> All modules
       </Link>
 
-      {/* Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className={cn('flex h-14 w-14 shrink-0 items-center justify-center rounded border', a.chip)}>
           <Icon className="h-7 w-7" />
@@ -72,7 +71,6 @@ export function BranchDetailPage() {
 
       <Tabs tabs={tabs} active={active} onChange={setActive} className="mb-6" />
 
-      {/* Resources tab */}
       {active === 'resources' && (
         <div className="animate-fade-in">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -108,7 +106,6 @@ export function BranchDetailPage() {
         </div>
       )}
 
-      {/* Functions tab */}
       {active === 'functions' && (
         <div className="grid animate-fade-in grid-cols-1 gap-4 md:grid-cols-2">
           {branch.subBranches.map((sub) => (

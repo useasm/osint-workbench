@@ -59,7 +59,6 @@ export function FindingsPage() {
         }
       />
 
-      {/* Severity summary */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {summary.map((s) => (
           <div key={s.label} className="rounded border border-border-color bg-bg-secondary/80 p-4">

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""Generates build/icon.png (1024x1024, RGBA) — the original icon:
-a dark-blue rounded square, a cyan border and the terminal glyph '>_'.
-stdlib only (zlib/struct), no external dependencies."""
+"""renders build/icon.png (1024x1024 rgba): dark rounded square, cyan border, ">_" glyph. stdlib only."""
 import math
 import os
 import struct
@@ -59,14 +57,13 @@ for y in range(H):
         if d > 0.8:
             raw += b"\x00\x00\x00\x00"
             continue
-        # alpha with anti-aliasing on the outer edge
+        # anti-aliased alpha on the outer edge
         a = 255 if d <= -0.8 else int(round((0.8 - d) / 1.6 * 255))
-        # vertical background gradient (slightly lighter at the top)
+        # vertical bg gradient, a bit lighter at the top
         r, g, b = lerp((14, 30, 64), NAVY, y / H)
-        # border
         if d > -BORDER:
             r, g, b = CYAN
-        # glyph: chevron + a subtle vertical cyan→violet shimmer
+        # glyph with a soft cyan→violet vertical shimmer
         ds = min(sd_seg(fx, fy, *C1, *C2), sd_seg(fx, fy, *C2, *C3))
         if ds < THICK:
             r, g, b = lerp(CYAN, VIOLET, (fy - C1[1]) / (C3[1] - C1[1]))

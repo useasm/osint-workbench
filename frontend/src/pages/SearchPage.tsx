@@ -26,7 +26,7 @@ export function SearchPage() {
       return
     }
     setPhase('scanning')
-    // Simulate a lookup purely on the client — no network, no backend.
+    // fake lookup, runs fully on the client for now
     window.setTimeout(() => setPhase('empty'), 1100)
   }
 
@@ -35,7 +35,6 @@ export function SearchPage() {
       <PageHeader title="Global search" subtitle="Quick search across connected OSINT sources." />
 
       <Card>
-        {/* Scope selector */}
         <div className="flex flex-wrap gap-2">
           {searchScopes.map((s) => {
             const selected = s.id === scope
@@ -61,7 +60,6 @@ export function SearchPage() {
           })}
         </div>
 
-        {/* Query input */}
         <form onSubmit={runSearch} className="mt-5 flex flex-col gap-3 sm:flex-row">
           <Input
             containerClassName="flex-1"
@@ -76,7 +74,6 @@ export function SearchPage() {
         </form>
       </Card>
 
-      {/* Results */}
       <Card title="Results" subtitle={`Scope: ${activeScope.label}`} className="mt-6">
         {phase === 'idle' && (
           <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">

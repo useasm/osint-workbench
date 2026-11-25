@@ -34,7 +34,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <Menu className="h-5 w-5" />
         </button>
 
-        {/* Fake command bar — routes to the real search page */}
+        {/* fake command bar, opens the search page */}
         <Link
           to="/search"
           className="group hidden items-center gap-2 rounded-sm border border-border-color bg-bg-primary/60 px-3 py-2 text-xs text-text-secondary transition-all duration-300 hover:border-accent-cyan/50 hover:text-text-primary sm:flex sm:w-72"

@@ -6,12 +6,11 @@ import (
 	"github.com/google/uuid"
 )
 
-// User represents a system user
 type User struct {
 	ID           uuid.UUID `db:"id" json:"id"`
 	Email        string    `db:"email" json:"email"`
 	Username     string    `db:"username" json:"username"`
-	PasswordHash []byte    `db:"password_hash" json:"-"` // Never expose hash
+	PasswordHash []byte    `db:"password_hash" json:"-"` // never serialized
 	FirstName    string    `db:"first_name" json:"first_name"`
 	LastName     string    `db:"last_name" json:"last_name"`
 	AvatarURL    string    `db:"avatar_url" json:"avatar_url,omitempty"`
@@ -22,10 +21,9 @@ type User struct {
 	LastLogin    *time.Time `db:"last_login" json:"last_login,omitempty"`
 	CreatedAt    time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at" json:"updated_at"`
-	DeletedAt    *time.Time `db:"deleted_at" json:"-"` // Soft delete
+	DeletedAt    *time.Time `db:"deleted_at" json:"-"` // soft delete
 }
 
-// UserCreateRequest is the request body for creating a user
 type UserCreateRequest struct {
 	Email     string `json:"email" validate:"required,email"`
 	Username  string `json:"username" validate:"required,min=3,max=32,alphanum"`
@@ -34,7 +32,6 @@ type UserCreateRequest struct {
 	LastName  string `json:"last_name" validate:"omitempty,max=255"`
 }
 
-// UserUpdateRequest is the request body for updating a user
 type UserUpdateRequest struct {
 	FirstName string `json:"first_name" validate:"omitempty,max=255"`
 	LastName  string `json:"last_name" validate:"omitempty,max=255"`
@@ -42,7 +39,6 @@ type UserUpdateRequest struct {
 	Timezone  string `json:"timezone" validate:"omitempty,max=50"`
 }
 
-// UserResponse is the response body for a user
 type UserResponse struct {
 	ID         uuid.UUID              `json:"id"`
 	Email      string                 `json:"email"`
@@ -57,7 +53,6 @@ type UserResponse struct {
 	CreatedAt  time.Time              `json:"created_at"`
 }
 
-// Role represents a user role
 type Role struct {
 	ID          uuid.UUID `db:"id" json:"id"`
 	Name        string    `db:"name" json:"name"`
@@ -67,7 +62,6 @@ type Role struct {
 	CreatedAt   time.Time `db:"created_at" json:"created_at"`
 }
 
-// Session represents a user session
 type Session struct {
 	ID               uuid.UUID `db:"id" json:"id"`
 	UserID           uuid.UUID `db:"user_id" json:"user_id"`
@@ -80,11 +74,10 @@ type Session struct {
 	LastActivity     time.Time `db:"last_activity" json:"last_activity"`
 }
 
-// APIKey represents an API key for programmatic access
 type APIKey struct {
 	ID         uuid.UUID `db:"id" json:"id"`
 	UserID     uuid.UUID `db:"user_id" json:"user_id"`
-	KeyHash    string    `db:"key_hash" json:"-"` // Never expose
+	KeyHash    string    `db:"key_hash" json:"-"` // never serialized
 	Name       string    `db:"name" json:"name"`
 	Scopes     []string  `db:"scopes" json:"scopes"`
 	RateLimit  int       `db:"rate_limit" json:"rate_limit"`
@@ -94,7 +87,6 @@ type APIKey struct {
 	IsActive   bool      `db:"is_active" json:"is_active"`
 }
 
-// AuditLog represents an audit log entry
 type AuditLog struct {
 	ID            uuid.UUID              `db:"id" json:"id"`
 	UserID        *uuid.UUID             `db:"user_id" json:"user_id"`

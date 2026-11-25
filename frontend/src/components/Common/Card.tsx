@@ -4,11 +4,8 @@ import { cn } from '../../lib/cn'
 export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title?: ReactNode
   subtitle?: ReactNode
-  /** Rendered on the right side of the header row. */
   action?: ReactNode
-  /** Remove inner padding (useful when embedding a Table). */
   noPadding?: boolean
-  /** Add an accent glow + colored top border on hover. */
   interactive?: boolean
   children?: ReactNode
 }

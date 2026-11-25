@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// External links (resource cards = <a target="_blank">) are opened in the system
-// browser: in Tauri via the opener plugin, on the web via plain window.open.
+// external links open in the system browser: opener plugin in tauri, window.open on the web
 const isTauri = '__TAURI_INTERNALS__' in window
 document.addEventListener(
   'click',

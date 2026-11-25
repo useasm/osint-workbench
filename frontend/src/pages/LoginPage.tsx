@@ -18,7 +18,6 @@ export function LoginPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      {/* Brand panel */}
       <aside className="relative hidden overflow-hidden border-r border-border-color bg-bg-secondary lg:flex">
         <div className="absolute inset-0 bg-grid opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-tr from-bg-primary via-transparent to-accent-green/5" />
@@ -56,7 +55,6 @@ export function LoginPage() {
         </div>
       </aside>
 
-      {/* Form panel */}
       <main className="flex items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-sm animate-fade-in">
           <div className="mb-8">

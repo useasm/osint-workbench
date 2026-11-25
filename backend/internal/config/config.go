@@ -9,19 +9,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Config holds all application configuration
 type Config struct {
-	// Server
 	Server ServerConfig
-	// Database
 	Database DatabaseConfig
-	// Redis
 	Redis RedisConfig
-	// JWT
 	JWT JWTConfig
-	// Logging
 	Log LogConfig
-	// Security
 	Security SecurityConfig
 }
 
@@ -45,7 +38,6 @@ type DatabaseConfig struct {
 	MaxOpenConns    int
 	MaxIdleConns    int
 	ConnMaxLifetime time.Duration
-	// Connection pool
 	ConnectionURL string
 }
 
@@ -54,7 +46,6 @@ type RedisConfig struct {
 	Port     int
 	DB       int
 	Password string
-	// Connection pool
 	PoolSize int
 	MinIdleConns int
 }
@@ -93,9 +84,7 @@ type CORSConfig struct {
 	MaxAge           int
 }
 
-// Load loads configuration from environment and config files
 func Load() (*Config, error) {
-	// Set defaults
 	viper.SetDefault("SERVER_HOST", "0.0.0.0")
 	viper.SetDefault("SERVER_PORT", 8080)
 	viper.SetDefault("SERVER_ENVIRONMENT", "development")
@@ -123,11 +112,10 @@ func Load() (*Config, error) {
 	viper.SetDefault("LOG_LEVEL", "info")
 	viper.SetDefault("LOG_FORMAT", "json")
 
-	viper.SetDefault("SECURITY_MAX_REQUEST_SIZE", 10485760) // 10MB
+	viper.SetDefault("SECURITY_MAX_REQUEST_SIZE", 10485760) // 10 mb
 	viper.SetDefault("SECURITY_RATE_LIMIT_RPS", 100)
 	viper.SetDefault("SECURITY_RATE_LIMIT_BURST", 200)
 
-	// Read from .env
 	viper.SetConfigFile(".env")
 	viper.BindEnv("SERVER_HOST")
 	viper.BindEnv("SERVER_PORT")
@@ -135,14 +123,12 @@ func Load() (*Config, error) {
 	viper.BindEnv("DATABASE_PASSWORD")
 	viper.BindEnv("JWT_SECRET")
 
-	// Read config file
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			return nil, err
 		}
 	}
 
-	// Build config
 	cfg := &Config{
 		Server: ServerConfig{
 			Host:        viper.GetString("SERVER_HOST"),
@@ -199,7 +185,6 @@ func Load() (*Config, error) {
 		},
 	}
 
-	// Build database connection URL
 	cfg.Database.ConnectionURL = fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
 		cfg.Database.User,
@@ -213,22 +198,19 @@ func Load() (*Config, error) {
 	return cfg, nil
 }
 
-// Helper function to parse duration string
 func parseDuration(s string) time.Duration {
 	d, err := time.ParseDuration(s)
 	if err != nil {
-		// Default to 15 seconds if parse fails
+		// fall back to 15s on bad input
 		return 15 * time.Second
 	}
 	return d
 }
 
-// IsProduction returns true if running in production environment
 func (c *Config) IsProduction() bool {
 	return c.Server.Environment == "production"
 }
 
-// IsDevelopment returns true if running in development environment
 func (c *Config) IsDevelopment() bool {
 	return c.Server.Environment == "development"
 }
